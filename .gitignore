@@ -1,0 +1,24 @@
+# Local environment & credentials (NEVER commit .env!)
+.env
+.env.*
+!.env.example
+
+# Virtual environment & Python cache
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Logs & temporary Docker image archives
+*.log
+*.log.*
+*.tar
+*.tar.part
+
+# Private keys
+*.pem
+*.key
+id_rsa*
+id_ed25519*
+
