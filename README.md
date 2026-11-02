@@ -73,10 +73,7 @@ Een tweetalige (**Engels standaard** / **Nederlands**) desktop-applicatie (**Cus
 4. **SSH `docker load` & Container Updaten (met automatische rollback)**:
    - Laadt de image in via SSH, ruimt het `.tar`-bestand op en zet de draaiende Home Assistant container over naar de nieuwe image met behoud van al je volumes, netwerkinstellingen, USB-sticks en omgevingsvariabelen.
 
-## Starten & Taakplanner
+## Starten 
 
 - **Grafische Interface openen**: Dubbelklik op [`run_update.bat`](run_update.bat).
-- **Automatisch uitvoeren via Windows Taakplanner**:
-  - **Programma/script**: `C:\pad\naar\HAUpdate\run_update.bat`
-  - **Parameters toevoegen**: `--auto`
-  - **Beginnen in**: `C:\pad\naar\HAUpdate`
+
