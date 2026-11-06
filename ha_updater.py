@@ -1804,9 +1804,28 @@ class HAUpdater:
 
             self._log("INFO", self._tr("log_start_new", name=cname))
             self._progress(0.98, self._tr("prog_start_new", name=cname))
-            run_code, run_out, run_err = self._run_ssh_command(
-                ssh, run_cmd, timeout=120
-            )
+            try:
+                run_code, run_out, run_err = self._run_ssh_command(
+                    ssh, run_cmd, timeout=180
+                )
+            except Exception as cmd_exc:
+                # Fallback verification: if SSH timed out, check if container actually started
+                time.sleep(5)
+                try:
+                    chk_code, chk_out, _ = self._run_ssh_command(
+                        ssh,
+                        f"{docker_bin_q} inspect {cname_q} --format '{{{{.State.Running}}}}'",
+                        timeout=20,
+                    )
+                    if chk_code == 0 and "true" in chk_out.lower():
+                        run_code = 0
+                        run_out = "started"
+                        run_err = ""
+                    else:
+                        raise cmd_exc
+                except Exception:
+                    raise cmd_exc
+
             if run_code != 0:
                 self._log(
                     "ERROR",
@@ -1836,8 +1855,11 @@ class HAUpdater:
             self._progress(1.0, self._tr("prog_recreate_ok", name=cname))
             return True
         except Exception as exc:
+            err_msg = str(exc).strip()
+            if not err_msg:
+                err_msg = f"{type(exc).__name__} (time-out)"
             self._log(
-                "ERROR", self._tr("err_recreate_exc", name=cname, err=exc)
+                "ERROR", self._tr("err_recreate_exc", name=cname, err=err_msg)
             )
             return False
         finally:

@@ -22,3 +22,7 @@ __pycache__/
 id_rsa*
 id_ed25519*
 
+# Local notes & documentation
+HANDLEIDING_*.md
+*.local.md
+
